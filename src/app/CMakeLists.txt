@@ -1,8 +1,7 @@
 # Create the main executable
 add_executable(responder
         main.cpp
-        bot.cpp
-        bot.h)
+        bot.cpp)
 
 # Link libraries to the executable
 target_link_libraries(responder PRIVATE

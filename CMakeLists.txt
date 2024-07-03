@@ -64,5 +64,5 @@ if (tgbotxx_ADDED)
 endif()
 
 # Link subdirectories
-include_directories(src)
+include_directories(include config src)
 add_subdirectory(src/app)
