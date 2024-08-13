@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.26)
 # Set the project info
 project(responder
         VERSION 1.0.0
-        DESCRIPTION "A Telegram bot to interact with specified messages."
+        DESCRIPTION "A Telegram bot to interact with specific messages."
         HOMEPAGE_URL https://github.com/lbgracioso/responder
         LANGUAGES CXX
 )
