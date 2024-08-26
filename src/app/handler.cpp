@@ -4,8 +4,6 @@
 */
 
 #include "handler.h"
-
-#include "bot.h"
 #include "cpr/cpr.h"
 #include "fmt/format.h"
 
@@ -26,6 +24,26 @@ std::string Handler::handleDuck() {
         response = jsonObj.at("url").get<std::string>();
     } catch (std::exception& e) {
         fmt::println("Duck Error: {}", e.what());
+    }
+
+    return response;
+}
+
+std::string Handler::handleFact() {
+    std::string url = "https://uselessfacts.jsph.pl/api/v2/facts/random";
+    std::string response;
+
+    try {
+        cpr::Response r = cpr::Get(
+                cpr::Url{url},
+                cpr::Header{{"Content-Type", "application/json"}});
+
+        fmt::println("Random Fact status code: {}", r.status_code);
+
+        auto jsonObj = nlohmann::json::parse(r.text);
+        response = jsonObj.at("text").get<std::string>();
+    } catch (std::exception& e) {
+        fmt::println("Random Fact Error: {}", e.what());
     }
 
     return response;

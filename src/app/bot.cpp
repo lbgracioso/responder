@@ -11,7 +11,12 @@ void MyBot::setCommands()
     Ptr<BotCommand> duckCmd(new BotCommand());
     duckCmd->command = "/duck";
     duckCmd->description = "A random quack";
-    api()->setMyCommands({duckCmd});
+
+    Ptr<BotCommand> randomFactsCmd(new BotCommand());
+    randomFactsCmd->command = "/randomfact";
+    randomFactsCmd->description = "A random true fact";
+
+    api()->setMyCommands({duckCmd, randomFactsCmd});
 }
 
 void MyBot::onStart() {
@@ -37,15 +42,19 @@ void MyBot::onCommand(const Ptr<Message> &message) {
 
 void MyBot::handleCommands(const Ptr<Message> &message) {
     static const std::unordered_map<std::string, int> commandMap = {
-        {"/duck", 1}
+        {"/duck", 1},
+        {"/randomfact", 2}
     };
 
     auto it = commandMap.find(message->text);
     if (it != commandMap.end()) {
         switch (it->second) {
             case 1:
-                api()->sendMessage(message->chat->id, m_handler.handleDuck());
-            break;
+                api()->sendMessage(message->chat->id, Handler::handleDuck());
+                break;
+            case 2:
+                api()->sendMessage(message->chat->id, Handler::handleFact());
+                break;
             default:
                 break;
         }

@@ -5,13 +5,13 @@
 
 #ifndef HANDLER_H
 #define HANDLER_H
-#include <tgbotxx/Bot.hpp>
 
 #include <string>
 
 class Handler {
 public:
-    std::string handleDuck();
+    static std::string handleDuck();
+    static std::string handleFact();
 };
 
 

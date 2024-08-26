@@ -3,7 +3,6 @@ add_executable(responder
         main.cpp
         bot.cpp
         handler.cpp
-        handler.h
 )
 
 # Link libraries to the executable
