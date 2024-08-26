@@ -1,11 +1,14 @@
 # Create the main executable
 add_executable(responder
         main.cpp
-        bot.cpp)
+        bot.cpp
+        handler.cpp
+        handler.h
+)
 
 # Link libraries to the executable
 target_link_libraries(responder PRIVATE
-        boost fmt tgbotxx)
+        boost fmt tgbotxx nlohmann_json)
 
 # Properties
 set_target_properties(responder PROPERTIES

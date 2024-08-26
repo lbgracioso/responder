@@ -1044,5 +1044,6 @@ dkms.conf
 # Raspberry Pi Pico disassembler file
 *.dis
 
-# Token file
-token
+# Token files
+openai.token
+telegram.token

@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.26)
 # Set the project info
 project(responder
         VERSION 1.0.0
-        DESCRIPTION "A Telegram bot to interact with specific messages."
+        DESCRIPTION "A Telegram bot to use some random free APIs and try them out."
         HOMEPAGE_URL https://github.com/lbgracioso/responder
         LANGUAGES CXX
 )
@@ -62,6 +62,21 @@ CPMAddPackage(
 if (tgbotxx_ADDED)
     find_package(tgbotxx)
 endif()
+
+# Download and link nlohmann_json
+CPMAddPackage("gh:nlohmann/json#v3.11.3")
+
+if(json_ADDED)
+    find_package(json REQUIRED)
+endif()
+
+# Download and link libcpr
+#CPMAddPackage("gh:libcpr/cpr#1.10.5")
+
+#if(libcpr_ADDED)
+#    find_package(libcpr REQUIRED)
+#endif()
+# This is not exactly needed because "tgbot" lib already includes this one.
 
 # Link subdirectories
 include_directories(include config src)
