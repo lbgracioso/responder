@@ -7,7 +7,9 @@ That's what it is, basically.
 
 ## Features
 **Random facts**: You can ask it to send random facts on the chat.
+
 **Random commits**: You can ask it to send random commit messages on the chat.
+
 **Duck photos**: Well, that's it. Funny duck photos.
 
 ## Usage
