@@ -16,7 +16,11 @@ void MyBot::setCommands()
     randomFactsCmd->command = "/randomfact";
     randomFactsCmd->description = "A random true fact";
 
-    api()->setMyCommands({duckCmd, randomFactsCmd});
+    Ptr<BotCommand> randomCommitMessageCmd(new BotCommand());
+    randomCommitMessageCmd->command = "/randomcommit";
+    randomCommitMessageCmd->description = "A random commit message";
+
+    api()->setMyCommands({duckCmd, randomFactsCmd, randomCommitMessageCmd});
 }
 
 void MyBot::onStart() {
@@ -43,7 +47,8 @@ void MyBot::onCommand(const Ptr<Message> &message) {
 void MyBot::handleCommands(const Ptr<Message> &message) {
     static const std::unordered_map<std::string, int> commandMap = {
         {"/duck", 1},
-        {"/randomfact", 2}
+        {"/randomfact", 2},
+        {"/randomcommit", 3}
     };
 
     auto it = commandMap.find(message->text);
@@ -55,6 +60,8 @@ void MyBot::handleCommands(const Ptr<Message> &message) {
             case 2:
                 api()->sendMessage(message->chat->id, Handler::handleFact());
                 break;
+            case 3:
+                api()->sendMessage(message->chat->id, Handler::handleCommit());
             default:
                 break;
         }

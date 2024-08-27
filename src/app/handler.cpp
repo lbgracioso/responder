@@ -6,7 +6,6 @@
 #include "handler.h"
 #include "cpr/cpr.h"
 #include "fmt/format.h"
-
 #include <nlohmann/json.hpp>
 
 std::string Handler::handleDuck() {
@@ -42,6 +41,25 @@ std::string Handler::handleFact() {
 
         auto jsonObj = nlohmann::json::parse(r.text);
         response = jsonObj.at("text").get<std::string>();
+    } catch (std::exception& e) {
+        fmt::println("Random Fact Error: {}", e.what());
+    }
+
+    return response;
+}
+
+std::string Handler::handleCommit() {
+    std::string url = "https://whatthecommit.com/index.txt";
+    std::string response;
+
+    try {
+        cpr::Response r = cpr::Get(
+                cpr::Url{url},
+                cpr::Header{{"Content-Type", "application/json"}});
+
+        fmt::println("Random Commit status code: {}", r.status_code);
+
+        response = r.text;
     } catch (std::exception& e) {
         fmt::println("Random Fact Error: {}", e.what());
     }

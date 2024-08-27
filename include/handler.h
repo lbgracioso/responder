@@ -12,6 +12,7 @@ class Handler {
 public:
     static std::string handleDuck();
     static std::string handleFact();
+    static std::string handleCommit();
 };
 
 
