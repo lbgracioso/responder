@@ -22,6 +22,7 @@ private:
     void onStop() override;
     void onAnyMessage(const Ptr<Message> &message) override;
     void onCommand(const Ptr<Message> &message) override;
+    static Ptr<ReplyKeyboardMarkup> getMemesKeyboard();
     void handleCommands(const Ptr<Message> &message);
 };
 

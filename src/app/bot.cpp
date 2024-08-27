@@ -24,7 +24,11 @@ void MyBot::setCommands()
     mememakerCmd->command = "/mememaker";
     mememakerCmd->description = "Create memes using imgflip. Check usage with /mememaker";
 
-    api()->setMyCommands({duckCmd, randomFactsCmd, randomCommitMessageCmd, mememakerCmd});
+    Ptr<BotCommand> memesCmd(new BotCommand());
+    memesCmd->command = "/memes";
+    memesCmd->description = "Use our memes";
+
+    api()->setMyCommands({duckCmd, randomFactsCmd, randomCommitMessageCmd, mememakerCmd, memesCmd});
 }
 
 void MyBot::onStart() {
@@ -48,12 +52,38 @@ void MyBot::onCommand(const Ptr<Message> &message) {
     handleCommands(message);
 }
 
+// Why this instead of InlineKeyboard?
+// Because this one disappears after using. It's sad it's not cool as InlineKeyboard but I prefer this option instead of keeping it on the chat.
+Ptr<ReplyKeyboardMarkup> MyBot::getMemesKeyboard() {
+    Ptr<ReplyKeyboardMarkup> memeKeyboard(new ReplyKeyboardMarkup());
+    memeKeyboard->oneTimeKeyboard = true;
+    memeKeyboard->resizeKeyboard = true;
+
+    std::vector<Ptr<KeyboardButton>> memeRow;
+    Ptr<KeyboardButton> randomCommitButton(new KeyboardButton());
+    randomCommitButton->text = "/randomcommit";
+    memeRow.push_back(randomCommitButton);
+
+    Ptr<KeyboardButton> randomFactButton(new KeyboardButton());
+    randomFactButton->text = "/randomfact";
+    memeRow.push_back(randomFactButton);
+
+    Ptr<KeyboardButton> duckButton(new KeyboardButton());
+    duckButton->text = "/duck";
+    memeRow.push_back(duckButton);
+
+    memeKeyboard->keyboard.push_back(memeRow);
+
+    return memeKeyboard;
+}
+
 void MyBot::handleCommands(const Ptr<Message> &message) {
     static const std::unordered_map<std::string, int> commandMap = {
         {"/duck", 1},
         {"/randomfact", 2},
         {"/randomcommit", 3},
-        {"/mememaker", 4}
+        {"/mememaker", 4},
+        {"/memes", 5}
     };
 
     for (const auto& command : commandMap) {
@@ -72,6 +102,8 @@ void MyBot::handleCommands(const Ptr<Message> &message) {
                 case 4:
                     api()->sendMessage(message->chat->id, Handler::handleMememaker(message->text));
                 break;
+                case 5:
+                    api()->sendMessage(message->chat->id, "Select a meme: ",  0, "", {}, false, false, false, 0, false, getMemesKeyboard());
                 default:
                     break;
             }
