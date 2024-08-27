@@ -29,21 +29,6 @@ endif ()
 
 include(${CMAKE_BINARY_DIR}/CPM.cmake)
 
-# Download and link Boost
-CPMAddPackage(
-        NAME Boost
-        VERSION 1.84.0
-        URL https://github.com/boostorg/boost/releases/download/boost-1.84.0/boost-1.84.0.tar.xz
-        URL_HASH SHA256=2e64e5d79a738d0fa6fb546c6e5c2bd28f88d268a2a080546f74e5ff98f29d0e
-        OPTIONS "BOOST_ENABLE_CMAKE ON" "BOOST_INCLUDE_LIBRARIES container\\\;asio\\\;system"
-)
-
-if (Boost_ADDED)
-    find_package(Boost REQUIRED)
-    add_library(boost INTERFACE)
-    target_link_libraries(boost INTERFACE Boost::asio Boost::container Boost::system)
-endif ()
-
 # Download and link FMT
 CPMAddPackage("gh:fmtlib/fmt#10.2.1")
 

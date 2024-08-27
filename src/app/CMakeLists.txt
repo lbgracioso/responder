@@ -9,7 +9,7 @@ add_executable(responder
 
 # Link libraries to the executable
 target_link_libraries(responder PRIVATE
-        boost fmt tgbotxx nlohmann_json SimpleIni spdlog)
+        fmt tgbotxx nlohmann_json SimpleIni spdlog)
 
 # Properties
 set_target_properties(responder PROPERTIES

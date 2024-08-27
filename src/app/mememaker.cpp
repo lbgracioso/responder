@@ -9,6 +9,7 @@
 #include "cpr/cpr.h"
 #include "fmt/format.h"
 
+#include <random>
 #include <nlohmann/json.hpp>
 
 std::string MemeMaker::createMeme(const std::string &memeId, const std::string &topText, const std::string &bottomText) {
@@ -52,7 +53,62 @@ std::string MemeMaker::createMeme(const std::string &memeId, const std::string &
 }
 
 std::string MemeMaker::help() {
-    return fmt::format("{}\n\n{}", "You can use mememaker with:\n/mememaker <memeId> \"Top text here (between quotes)\" \"Bottom text here (between quotes)\"", "Find meme IDs on imgflip site:\nhttps://imgflip.com/popular-meme-ids");
+    return fmt::format("{}\n\n{}\n\n{}\n\n{}",
+                                    "You can use mememaker with:",
+                                    "/mememaker create <memeId> \"Top text here (between quotes)\" \"Bottom text here (between quotes)\"",
+                                    "/mememaker list for the TOP10 memes OR /mememaker list random for 10 random memes",
+                                    "Find meme IDs on imgflip site:\nhttps://imgflip.com/popular-meme-ids");
+}
+
+std::string MemeMaker::handleList(LIST_TYPE type) {
+    std::string url = "https://api.imgflip.com/get_memes";
+
+    try {
+        cpr::Response r = cpr::Get(
+        cpr::Url{url},
+        cpr::Header{{"Content-Type", "application/json"}});
+
+        Log::Info ("MemeMaker get_memes status code: {}", r.status_code);
+
+        auto jsonObj = nlohmann::json::parse(r.text);
+        if (jsonObj.contains("data") && jsonObj["data"].contains("memes")) {
+            std::vector<std::string> memeList;
+            for (const auto& meme : jsonObj["data"]["memes"]) {
+                std::string id = meme["id"];
+                std::string name = meme["name"];
+                std::string URL = meme["url"];
+                memeList.emplace_back(fmt::format("ID: {}\nName: {}\nURL: {}", id, name, URL));
+            }
+
+            switch(type) { \
+                case RANDOM:
+                    return fmt::format("Random popular memes:\n\n {}", fmt::join(getRandomMemes(memeList), "\n\n"));
+                    break;
+                case TOP10:
+                    return fmt::format("TOP 10 memes:\n\n {}", fmt::join(get10Memes(memeList), "\n\n"));
+                    break;
+                default:
+                    return help();
+                    break;
+            }
+        }
+
+    } catch (std::exception& e) {
+        Log::Error("MemeMaker get_memes error: {}", e.what());
+    }
+
+    return "MemeMaker had trouble finding popular memes";
+}
+
+std::string MemeMaker::handleList(std::istringstream &iss) {
+    std::string type;
+    iss >> type;
+
+    if (type == "random") {
+        return handleList(LIST_TYPE::RANDOM);
+    } else {
+        return handleList(LIST_TYPE::TOP10);
+    }
 }
 
 std::string MemeMaker::extractQuotedText(std::istringstream& iss) {
@@ -62,8 +118,10 @@ std::string MemeMaker::extractQuotedText(std::istringstream& iss) {
     return result;
 }
 
-std::string MemeMaker::extractMemeInfo(std::string& memeId, std::istringstream& iss)
+std::string MemeMaker::createMeme(std::istringstream& iss)
 {
+    std::string memeId;
+    iss >> memeId;
     std::string topText;
     std::string bottomText;
 
@@ -76,6 +134,24 @@ std::string MemeMaker::extractMemeInfo(std::string& memeId, std::istringstream& 
     }
 
     return createMeme(memeId, topText, bottomText);
+}
+
+std::vector<std::string> MemeMaker::getRandomMemes(std::vector<std::string> list) {
+    // Create a random device and use it to seed the generator
+    std::random_device rd;
+    std::mt19937 gen(rd()); // Mersenne Twister engine
+
+    // Shuffle the vector using the generator
+    std::shuffle(list.begin(), list.end(), gen);
+
+    return get10Memes(list);
+}
+
+std::vector<std::string> MemeMaker::get10Memes(std::vector<std::string> list) {
+    // Retrieve the first 10 memes or the actual amount (if lesser than 10)
+    size_t numMemesToReturn = std::min(list.size(), static_cast<size_t>(10));
+    std::vector<std::string> selectedMemes(list.begin(), list.begin() + numMemesToReturn);
+    return selectedMemes;
 }
 
 std::string MemeMaker::handleMessage(const std::string& message) {
@@ -92,9 +168,13 @@ std::string MemeMaker::handleMessage(const std::string& message) {
 
     if (subCommand.empty()) {
         return help();
+    } else if (subCommand == "list") {
+        return handleList(iss);
+    } else if (subCommand == "create") {
+        return createMeme(iss);
     }
 
-    return extractMemeInfo(subCommand, iss);
+    return help();
 }
 
 MemeMaker::MemeMaker() {
