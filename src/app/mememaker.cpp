@@ -4,7 +4,6 @@
 */
 
 #include "mememaker.h"
-
 #include "environment.h"
 #include "log.h"
 #include "cpr/cpr.h"

@@ -50,7 +50,6 @@ public:
         log(spdlog::level::debug, fmt, std::forward<Args>(args)...);
     }
 
-
     static void shutdown();
 };
 

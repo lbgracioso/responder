@@ -3,11 +3,8 @@ add_executable(responder
         main.cpp
         bot.cpp
         handler.cpp
-        ../../include/environment.h
         mememaker.cpp
-        ../../include/mememaker.h
         log.cpp
-        log.h
 )
 
 # Link libraries to the executable

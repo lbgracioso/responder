@@ -4,7 +4,6 @@
 */
 
 #include "log.h"
-
 #include <handler.h>
 #include <cpr/cpr.h>
 #include <fmt/core.h>
