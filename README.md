@@ -19,4 +19,4 @@ That's what it is, basically.
 GNU GENERAL PUBLIC LICENSE
 
 ## Author
-This project was created on 2024 by (Lucas Gracioso)[https://lbgracioso.net].
+This project was created on 2024 by [Lucas Gracioso](https://lbgracioso.net).
