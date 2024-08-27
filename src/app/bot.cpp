@@ -104,6 +104,7 @@ void MyBot::handleCommands(const Ptr<Message> &message) {
                 break;
                 case 5:
                     api()->sendMessage(message->chat->id, "Select a meme: ",  0, "", {}, false, false, false, 0, false, getMemesKeyboard());
+                break;
                 default:
                     break;
             }
