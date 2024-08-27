@@ -85,6 +85,13 @@ endif()
 #endif()
 # This is not exactly needed because "tgbot" lib already includes this one.
 
+# Download and link spdlog
+CPMAddPackage("gh:gabime/spdlog#v1.14.1")
+
+if(spdlog_ADDED)
+    find_package(spdlog REQUIRED)
+endif()
+
 # Link subdirectories
 include_directories(include config src)
 add_subdirectory(src/app)

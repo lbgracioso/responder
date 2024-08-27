@@ -6,6 +6,7 @@
 #include "mememaker.h"
 
 #include "environment.h"
+#include "log.h"
 #include "cpr/cpr.h"
 #include "fmt/format.h"
 
@@ -35,19 +36,19 @@ std::string MemeMaker::createMeme(const std::string &memeId, const std::string &
             if (jsonResponse["success"].get<bool>()) {
                 response = jsonResponse["data"]["url"].get<std::string>();
             } else {
-                fmt::println("MemeMaker Error: {}\n", jsonResponse["error_message"].get<std::string>());
+                Log::Error("MemeMaker Error: {}\n", jsonResponse["error_message"].get<std::string>());
                 return "MemeMaker couldn't create or find this meme.";
             }
         } else {
-            fmt::println("MemeMaker Error: Received status code {}\n", r.status_code);
+            Log::Error("MemeMaker Error: Received status code {}\n", r.status_code);
             return "MemeMaker has a problem. Please contact the administrator.";
         }
 
     } catch (std::exception& e) {
-        fmt::println("MemeMaker Error: {}", e.what());
+        Log::Error("MemeMaker Error: {}", e.what());
     }
 
-    fmt::println("MemeMaker made a meme with success: {}", response);
+    Log::Info("MemeMaker made a meme with success: {}", response);
     return response;
 }
 

@@ -3,6 +3,8 @@
  * SPDX-License-Identifier: Apache-2.0
 */
 
+#include "log.h"
+
 #include <handler.h>
 #include <cpr/cpr.h>
 #include <fmt/core.h>
@@ -18,12 +20,12 @@ std::string Handler::handleDuck() {
                 cpr::Url{url},
                 cpr::Header{{"Content-Type", "application/json"}});
 
-        fmt::println("Duck status code: {}", r.status_code);
+        Log::Info("Duck status code: {}", r.status_code );
 
         auto jsonObj = nlohmann::json::parse(r.text);
         response = jsonObj.at("url").get<std::string>();
     } catch (std::exception& e) {
-        fmt::println("Duck Error: {}", e.what());
+        Log::Error("Duck Error: {}", e.what());
     }
 
     return response;
@@ -38,12 +40,12 @@ std::string Handler::handleFact() {
                 cpr::Url{url},
                 cpr::Header{{"Content-Type", "application/json"}});
 
-        fmt::println("Random Fact status code: {}", r.status_code);
+        Log::Info("Random Fact status code: {}", r.status_code);
 
         auto jsonObj = nlohmann::json::parse(r.text);
         response = jsonObj.at("text").get<std::string>();
     } catch (std::exception& e) {
-        fmt::println("Random Fact Error: {}", e.what());
+        Log::Error("Random Fact Error: {}", e.what());
     }
 
     return response;
@@ -58,11 +60,11 @@ std::string Handler::handleCommit() {
                 cpr::Url{url},
                 cpr::Header{{"Content-Type", "application/json"}});
 
-        fmt::println("Random Commit status code: {}", r.status_code);
+        Log::Info("Random Commit status code: {}", r.status_code);
 
         response = r.text;
     } catch (std::exception& e) {
-        fmt::println("Random Fact Error: {}", e.what());
+        Log::Error("Random Fact Error: {}", e.what());
     }
 
     return response;

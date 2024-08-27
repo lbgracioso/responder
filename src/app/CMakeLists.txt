@@ -6,11 +6,13 @@ add_executable(responder
         ../../include/environment.h
         mememaker.cpp
         ../../include/mememaker.h
+        log.cpp
+        log.h
 )
 
 # Link libraries to the executable
 target_link_libraries(responder PRIVATE
-        boost fmt tgbotxx nlohmann_json SimpleIni)
+        boost fmt tgbotxx nlohmann_json SimpleIni spdlog)
 
 # Properties
 set_target_properties(responder PROPERTIES
