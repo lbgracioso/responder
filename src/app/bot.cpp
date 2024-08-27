@@ -20,7 +20,11 @@ void MyBot::setCommands()
     randomCommitMessageCmd->command = "/randomcommit";
     randomCommitMessageCmd->description = "A random commit message";
 
-    api()->setMyCommands({duckCmd, randomFactsCmd, randomCommitMessageCmd});
+    Ptr<BotCommand> mememakerCmd(new BotCommand());
+    mememakerCmd->command = "/mememaker";
+    mememakerCmd->description = "Create memes using imgflip. Check usage with /mememaker";
+
+    api()->setMyCommands({duckCmd, randomFactsCmd, randomCommitMessageCmd, mememakerCmd});
 }
 
 void MyBot::onStart() {
@@ -48,25 +52,31 @@ void MyBot::handleCommands(const Ptr<Message> &message) {
     static const std::unordered_map<std::string, int> commandMap = {
         {"/duck", 1},
         {"/randomfact", 2},
-        {"/randomcommit", 3}
+        {"/randomcommit", 3},
+        {"/mememaker", 4}
     };
 
-    auto it = commandMap.find(message->text);
-    if (it != commandMap.end()) {
-        switch (it->second) {
-            case 1:
-                api()->sendMessage(message->chat->id, Handler::handleDuck());
+    for (const auto& command : commandMap) {
+        // Check if the message text starts with the command
+        if (message->text.rfind(command.first, 0) == 0) {
+            switch (command.second) {
+                case 1:
+                    api()->sendMessage(message->chat->id, Handler::handleDuck());
                 break;
-            case 2:
-                api()->sendMessage(message->chat->id, Handler::handleFact());
+                case 2:
+                    api()->sendMessage(message->chat->id, Handler::handleFact());
                 break;
-            case 3:
-                api()->sendMessage(message->chat->id, Handler::handleCommit());
-            default:
+                case 3:
+                    api()->sendMessage(message->chat->id, Handler::handleCommit());
                 break;
+                case 4:
+                    api()->sendMessage(message->chat->id, Handler::handleMememaker(message->text));
+                break;
+                default:
+                    break;
+            }
+            return;
         }
-    } else {
-        // For now, it does nothing
     }
 }
 

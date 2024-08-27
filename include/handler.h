@@ -8,11 +8,14 @@
 
 #include <string>
 
+#include "mememaker.h"
+
 class Handler {
 public:
     static std::string handleDuck();
     static std::string handleFact();
     static std::string handleCommit();
+    static std::string handleMememaker(std::string& message);
 };
 
 

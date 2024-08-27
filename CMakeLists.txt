@@ -70,6 +70,13 @@ if(json_ADDED)
     find_package(json REQUIRED)
 endif()
 
+# Download and link nlohmann_json
+CPMAddPackage("gh:brofield/simpleini#v4.22")
+
+if(json_ADDED)
+    find_package(json REQUIRED)
+endif()
+
 # Download and link libcpr
 #CPMAddPackage("gh:libcpr/cpr#1.10.5")
 

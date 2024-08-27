@@ -5,18 +5,15 @@
 
 #ifndef RESPONDER_BOT_H
 #define RESPONDER_BOT_H
+#include "environment.h"
 #include "handler.h"
 
 #include <tgbotxx/tgbotxx.hpp>
 using namespace tgbotxx;
 
-constexpr const char *TELEGRAM_TOKEN =
-#include "telegram.token"
-        ;
-
 class MyBot : public Bot {
 public:
-    MyBot() : Bot(TELEGRAM_TOKEN) {}
+    MyBot() : Bot(Environment().configfile.GetValue("telegram", "token")) {}
 
 private:
     Handler m_handler;

@@ -3,9 +3,10 @@
  * SPDX-License-Identifier: Apache-2.0
 */
 
-#include "handler.h"
-#include "cpr/cpr.h"
-#include "fmt/format.h"
+#include <handler.h>
+#include <cpr/cpr.h>
+#include <fmt/core.h>
+#include <fmt/format.h>
 #include <nlohmann/json.hpp>
 
 std::string Handler::handleDuck() {
@@ -65,4 +66,8 @@ std::string Handler::handleCommit() {
     }
 
     return response;
+}
+
+std::string Handler::handleMememaker(std::string& message) {
+    return MemeMaker().handleMessage(message);
 }
