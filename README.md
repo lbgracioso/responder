@@ -12,6 +12,8 @@ That's what it is, basically.
 
 **Duck photos**: Well, that's it. Funny duck photos.
 
+**Mememaker**: Create memes using imgflip API.
+
 ## Usage
 @TODO - I really need to try it out from scratch to write this. It'll take some time ;)
 
